@@ -11,6 +11,8 @@ import VisuallyHidden from '../VisuallyHidden';
 
 import styles from './Toast.module.css';
 
+import useEscapeKey from '../../hooks/useEscapeKey';
+
 const ICONS_BY_VARIANT = {
   notice: Info,
   warning: AlertTriangle,
@@ -20,16 +22,7 @@ const ICONS_BY_VARIANT = {
 
 function Toast({variant, children, dismissToast, id}) {
 
-  React.useEffect(() => {
-    function handleEscapeKey(event) {
-      if (event.code === "Escape") {
-        dismissToast()
-      }
-    }
-    window.addEventListener("keydown", handleEscapeKey)
-    return () => (window.removeEventListener("keydown", handleEscapeKey))
-  },[dismissToast])
-
+  useEscapeKey(dismissToast)
 
   const Icon = ICONS_BY_VARIANT[variant]
   return (
@@ -38,11 +31,16 @@ function Toast({variant, children, dismissToast, id}) {
         <Icon size={24} />
       </div>
       <p className={styles.content}>
+      <VisuallyHidden>{variant} - </VisuallyHidden>
         {children}
       </p>
-      <button className={styles.closeButton} onClick={() => dismissToast(id)}>
+      <button className={styles.closeButton} 
+        onClick={() => dismissToast(id)}
+        aria-label={`${variant} message`}
+        aria-live="off"
+      >
         <X size={24} />
-        <VisuallyHidden>Dismiss message</VisuallyHidden>
+        
       </button>
     </div>
   );
