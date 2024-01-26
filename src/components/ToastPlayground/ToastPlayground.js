@@ -15,8 +15,6 @@ function ToastPlayground() {
 
   const {toasts, createToast, dismissToast} = React.useContext(ToastContext);
 
-
-
   return (
     <div className={styles.wrapper}>
       <header>

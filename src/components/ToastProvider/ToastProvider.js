@@ -16,6 +16,10 @@ function ToastProvider({children}) {
   }
 
   function dismissToast(id) {
+    if (!id) {
+      setToasts([])
+      return
+    }
     const newToasts = toasts.filter((toast) => toast.id !== id)
     setToasts(newToasts)
   }

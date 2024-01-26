@@ -19,6 +19,18 @@ const ICONS_BY_VARIANT = {
 };
 
 function Toast({variant, children, dismissToast, id}) {
+
+  React.useEffect(() => {
+    function handleEscapeKey(event) {
+      if (event.code === "Escape") {
+        dismissToast()
+      }
+    }
+    window.addEventListener("keydown", handleEscapeKey)
+    return () => (window.removeEventListener("keydown", handleEscapeKey))
+  },[dismissToast])
+
+
   const Icon = ICONS_BY_VARIANT[variant]
   return (
     <div className={`${styles.toast} ${styles[variant]}`}>
